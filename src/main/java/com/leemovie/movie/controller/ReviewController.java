@@ -1,13 +1,12 @@
 package com.leemovie.movie.controller;
 
+import com.leemovie.movie.domain.Review;
 import com.leemovie.movie.service.MovieService;
 import com.leemovie.movie.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,5 +22,22 @@ public class ReviewController {
         model.addAttribute("reviews", reviewService.getReviewsByMovieId(id));
 
         return "movie-detail";
+    }
+
+    @PostMapping("/{id}/reviews")
+    public String addReview(@PathVariable("id") Long movieId,
+                            @RequestParam String author,
+                            @RequestParam String content,
+                            @RequestParam double rating) {
+
+        Review review = Review.builder()
+                .movieId(movieId)
+                .author(author)
+                .content(content)
+                .rating(rating)
+                .build();
+
+        reviewService.addReview(review);
+        return "redirect:/movies/" + movieId;
     }
 }

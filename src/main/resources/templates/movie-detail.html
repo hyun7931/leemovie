@@ -19,6 +19,23 @@
         </li>
     </ul>
 
+    <h3>리뷰 남기기</h3>
+    <form th:action="@{/movies/{id}/reviews(id=${movie.movieId})}" method="post">
+        <div>
+            <label>작성자: </label>
+            <input type="text" name="author" required>
+        </div>
+        <div>
+            <label>내용: </label>
+            <textarea name="content" required></textarea>
+        </div>
+        <div>
+            <label>평점: </label>
+            <input type="number" name="rating" step="0.1" min="0" max="5" required>
+        </div>
+        <button type="submit">리뷰 등록</button>
+    </form>
+
     <a href="/movies">목록으로 돌아가기</a>
 </body>
 </html>
