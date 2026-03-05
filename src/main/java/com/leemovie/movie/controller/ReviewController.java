@@ -19,7 +19,7 @@ public class ReviewController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        //model.addAttribute("movie", movieService.getMovieById(id));
+        model.addAttribute("movie", movieService.getMovieById(id));
         model.addAttribute("reviews", reviewService.getReviewsByMovieId(id));
 
         return "movie-detail";
