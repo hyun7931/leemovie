@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Movie List</title>
+</head>
+
+<body>
+<h1>Movie List</h1>
+
+<div th:each="movie : ${movies}">
+    <img th:src="${movie.imageUrl}" width="150">
+    <h3 th:text="${movie.title}"></h3>
+    <p>평점 : <span th:text="${movie.rating}"></span></p>
+    <p>관객수 : <span th:text="${movie.audience}"></span></p>
+    <a th:href="@{/movies/{id}(id=${movie.movieId})}">
+        상세보기
+    </a>
+    <hr>
+</div>
+</body>
+</html>
