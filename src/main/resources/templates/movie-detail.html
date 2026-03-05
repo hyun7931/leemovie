@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>영화 상세 정보</title>
+</head>
+<body>
+    <h1 th:text="${movie.title}">영화 제목</h1>
+    <img th:src="${movie.imageUrl}" width="300"/>
+    <p>평점: <span th:text="${movie.rating}">0.0</span></p>
+    <p>설명: <span th:text="${movie.description}">설명</span></p>
+
+    <hr>
+    <h3>리뷰 목록</h3>
+    <ul>
+        <li th:each="review : ${reviews}">
+            <strong th:text="${review.author}">작성자</strong>:
+            <span th:text="${review.content}">내용</span>
+            (<span th:text="${review.rating}">평점</span>)
+        </li>
+    </ul>
+
+    <a href="/movies">목록으로 돌아가기</a>
+</body>
+</html>
