@@ -19,7 +19,7 @@ public class ReviewRepository {
 
     public List<Review> findByMovieId(Long movieId) {
         return reviews.stream()
-                .filter(r -> r.getMovieId().equals(movieId))
+                .filter(r -> r.getMovieId() != null && r.getMovieId().equals(movieId))
                 .collect(Collectors.toList());
     }
 

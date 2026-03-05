@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>영화 상세 정보</title>
+    <meta charset="UTF-8" />
+    <title th:text="${movie.title}">영화 상세 정보</title>
+    <link rel="stylesheet" th:href="@{/movieDetailStyle.css}">
 </head>
 <body>
-    <h1 th:text="${movie.title}">영화 제목</h1>
-    <img th:src="${movie.imageUrl}" width="300"/>
-    <p>평점: <span th:text="${movie.rating}">0.0</span></p>
-    <p>설명: <span th:text="${movie.description}">설명</span></p>
 
-    <hr>
-    <h3>리뷰 목록</h3>
-    <ul>
-        <li th:each="review : ${reviews}">
-            <strong th:text="${review.author}">작성자</strong>:
-            <span th:text="${review.content}">내용</span>
-            (<span th:text="${review.rating}">평점</span>)
-        </li>
-    </ul>
+<main class="detail-container">
+    <div class="back-nav">
+        <a href="/movies">← 목록으로 돌아가기</a>
+    </div>
 
-    <a href="/movies">목록으로 돌아가기</a>
+    <section class="movie-header">
+        <div class="poster-wrapper">
+            <img th:src="${movie.imageUrl}" th:alt="${movie.title}" class="detail-poster"/>
+        </div>
+
+        <div class="info-wrapper">
+            <h1 class="movie-title" th:text="${movie.title}">영화 제목</h1>
+            <div class="stats">
+                <span class="rating-badge">⭐ <span th:text="${movie.rating}">0.0</span></span>
+            </div>
+            <p class="description" th:text="${movie.description}">영화 설명이 들어가는 자리입니다.</p>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <section class="review-section">
+        <h3>💬 리뷰 목록</h3>
+        <ul class="review-list">
+            <li th:each="review : ${reviews}" class="review-item">
+                <div class="review-header">
+                    <strong class="author" th:text="${review.author}">작성자</strong>
+                    <span class="review-rating" th:text="'⭐ ' + ${review.rating}">5.0</span>
+                </div>
+                <p class="content" th:text="${review.content}">리뷰 내용</p>
+            </li>
+            <li th:if="${#lists.isEmpty(reviews)}" class="empty-msg">첫 번째 리뷰를 남겨보세요!</li>
+        </ul>
+
+        <div class="review-form-card">
+            <h3>✍️ 리뷰 남기기</h3>
+            <form th:action="@{/movies/{id}/reviews(id=${movie.movieId})}" method="post" class="review-form">
+                <div class="input-group">
+                    <input type="text" name="author" placeholder="닉네임" required>
+                    <input type="number" name="rating" step="0.1" min="0" max="5" placeholder="평점" required>
+                </div>
+                <textarea name="content" placeholder="영화에 대한 감상을 남겨주세요." required></textarea>
+                <button type="submit" class="submit-btn">리뷰 등록</button>
+            </form>
+        </div>
+    </section>
+</main>
+
 </body>
 </html>
