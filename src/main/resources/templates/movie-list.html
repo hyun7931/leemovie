@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8" />
     <title>Movie List</title>
+    <link rel="stylesheet" th:href="@{/movieStyle.css}">
 </head>
-
 <body>
-<h1>Movie List</h1>
 
-<div th:each="movie : ${movies}">
-    <img th:src="${movie.imageUrl}" width="150">
-    <h3 th:text="${movie.title}"></h3>
-    <p>평점 : <span th:text="${movie.rating}"></span></p>
-    <p>관객수 : <span th:text="${movie.audience}"></span></p>
-    <a th:href="@{/movies/{id}(id=${movie.movieId})}">
-        상세보기
-    </a>
-    <hr>
-</div>
+<main class="page">
+    <h1 class="title">🍿Movie List</h1>
+
+    <section class="grid">
+        <a class="card"
+           th:each="movie : ${movies}"
+           th:href="@{/movies/{id}(id=${movie.movieId})}">
+
+            <img class="poster" th:src="${movie.imageUrl}" th:alt="${movie.title}" />
+
+            <div class="overlay">
+                <div class="overlay-content">
+                    <h3 class="movie-title" th:text="${movie.title}">Movie Title</h3>
+
+                    <p class="meta">
+                        ⭐ <span th:text="${movie.rating}">4.8</span>
+                        <span class="dot">•</span>
+                        👥 <span th:text="${movie.audience}">1200000</span>
+                    </p>
+
+                    <p class="desc" th:text="${movie.description}">
+                        description...
+                    </p>
+                </div>
+            </div>
+        </a>
+    </section>
+</main>
+
 </body>
 </html>
