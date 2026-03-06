@@ -134,3 +134,68 @@ http://localhost:8080/movies
 ### ReviewService
 - `getReviewsByMovieId()`: 특정 영화의 모든 리뷰를 반환합니다.
 - `addReview()`: 새로운 리뷰를 저장합니다.
+
+---
+
+## Movie 요청 처리 흐름
+
+영화 목록 조회 요청은 Spring MVC의 **DispatcherServlet → Controller → Service → Repository → View** 흐름을 따라 처리됩니다.
+
+#### 1. 클라이언트 요청
+
+브라우저에서 다음 URL로 요청을 보냅니다.
+
+#### 2. DispatcherServlet 수신
+
+Spring MVC의 **DispatcherServlet(Front Controller)**이 모든 HTTP 요청을 먼저 수신합니다.
+
+#### 3. HandlerMapping
+
+DispatcherServlet은 요청 URL `/movies`와 매핑된 Controller 메서드를 찾습니다.
+
+```java
+@GetMapping("/movies")
+```
+
+#### 4. MovieController 실행
+
+HandlerMapping을 통해 MovieController.movieList() 메서드가 호출됩니다.
+
+```
+@GetMapping("/movies")
+public String movieList(Model model) {
+
+    List<Movie> movies = movieService.getMovies();
+
+    model.addAttribute("movies", movies);
+
+    return "movie-list";
+}
+```
+#### 5. Service 계층 호출
+
+컨트롤러는 MovieService를 통해 영화 데이터를 조회합니다.
+
+```
+movieService.getMovies()
+```
+
+#### 6. Repository 데이터 조회
+
+MovieService는 MovieRepository를 호출하여 영화 목록을 반환합니다.
+이 프로젝트에서는 DB 대신 메모리 기반 Dummy 데이터를 사용합니다.
+
+#### 7. Model 데이터 전달
+
+```
+model.addAttribute("movies", movies);
+```
+
+#### 8. ViewResolver + Thymeleaf
+
+컨트롤러가 반환한 "movie-list" 뷰 이름을 기반으로 Spring이 다음 템플릿을 찾아 렌더링합니다.
+
+#### 9. HTML 응답 반환
+
+Thymeleaf가 Model 데이터를 바인딩하여 HTML을 생성하고
+DispatcherServlet이 최종 결과를 브라우저에 반환합니다.
